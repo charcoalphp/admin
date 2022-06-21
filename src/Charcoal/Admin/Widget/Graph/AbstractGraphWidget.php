@@ -322,7 +322,7 @@ abstract class AbstractGraphWidget extends AdminWidget implements
             }
         }
 
-        usort($graphActions, [ 'Charcoal\Admin\Support\Sorter', 'sortByPriority' ]);
+        usort($graphActions, [ $this, 'sortActionsByPriority' ]);
 
         while (($first = reset($graphActions)) && $first['isSeparator']) {
             array_shift($graphActions);

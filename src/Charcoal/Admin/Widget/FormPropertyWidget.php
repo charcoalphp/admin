@@ -933,6 +933,7 @@ class FormPropertyWidget extends AdminWidget implements
     /**
      * Determine if the form control's active language should be displayed.
      *
+     * @see    FormSidebarWidget::showLanguageSwitch()
      * @return boolean
      */
     public function showActiveLanguage()
