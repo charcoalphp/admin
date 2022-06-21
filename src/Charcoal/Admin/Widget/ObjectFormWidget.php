@@ -575,21 +575,14 @@ class ObjectFormWidget extends FormWidget implements
         if ($this->validateObjType()) {
             $locales = count($this->translator()->availableLocales());
             if ($locales > 1) {
-                $model = $this->obj();
-                $props = [];
+                $model = $this->proto();
 
-                foreach ($this->groups as $group) {
-                    array_push($props, ...($group->groupProperties()));
-                }
-
-                $props = array_values(array_unique($props));
-
-                foreach ($props as $prop) {
-                    $modelProp = $model->property($prop);
+                foreach ($this->getFormProperties() as $formProp) {
+                    $modelProp = $formProp->property();
                     if ($modelProp['l10n']) {
                         return true;
                     } elseif ($modelProp instanceof ModelStructureProperty) {
-                        $metadata = $modelProp->getStructureMetadata();
+                        $metadata = $model->property($modelProp['ident'])->getStructureMetadata();
                         foreach ($metadata->properties() as $prop) {
                             if (isset($prop['l10n']) && $prop['l10n']) {
                                 return true;
