@@ -3,10 +3,8 @@
 namespace Charcoal\Admin\Widget;
 
 use InvalidArgumentException;
-
 // From 'charcoal-admin'
 use Charcoal\Admin\AdminWidget;
-
 // From 'charcoal-core'
 use Charcoal\Source\Pagination;
 use Charcoal\Source\PaginationInterface;
@@ -19,7 +17,7 @@ class PaginationWidget extends AdminWidget
     /**
      * Max pages count in the pagination
      */
-    const MAX_PAGE_COUNT = 10;
+    public const MAX_PAGE_COUNT = 10;
 
     /**
      * The pager object.

@@ -4,21 +4,20 @@ namespace Charcoal\Admin\Widget;
 
 use UnexpectedValueException;
 use InvalidArgumentException;
-
 // From Pimple
 use Pimple\Container;
-
+// From 'charcoal-core'
+use Charcoal\Model\ModelInterface;
 // From 'charcoal-property'
 use Charcoal\Property\ModelStructureProperty;
-
 // From 'charcoal-ui'
 use Charcoal\Ui\FormGroup\FormGroupInterface;
 use Charcoal\Ui\Form\FormInterface;
-
 // From 'charcoal-admin'
 use Charcoal\Admin\Widget\FormWidget;
 use Charcoal\Admin\Widget\FormPropertyWidget;
-
+use Charcoal\Admin\Ui\FormGroupInterface as AdminFormGroupInterface;
+use Charcoal\Admin\Ui\LanguageSwitcherAwareInterface;
 use Charcoal\Admin\Ui\ObjectContainerInterface;
 use Charcoal\Admin\Ui\ObjectContainerTrait;
 
@@ -366,7 +365,7 @@ class ObjectFormWidget extends FormWidget implements
             'obj_id'             => $this->objId(),
             'obj_type'           => $this->objType(),
             'template'           => $this->template(),
-            'form_selector'      => '#'.$this->widgetId(),
+            'form_selector'      => '#' . $this->widgetId(),
             'tab'                => $this->isTabbable(),
             'group_display_mode' => $this->groupDisplayMode(),
             'group_conditions'   => $this->groupsConditionalLogic(),
@@ -466,7 +465,7 @@ class ObjectFormWidget extends FormWidget implements
                 $method = $matches[2];
 
                 if ($class === 'parent') {
-                    $resolved = [$obj, $class.'::'.$method];
+                    $resolved = [$obj, $class . '::' . $method];
                 }
             }
 
@@ -566,6 +565,33 @@ class ObjectFormWidget extends FormWidget implements
     }
 
     /**
+     * Whether a language switcher could be displayed.
+     *
+     * @return bool
+     */
+    public function supportsLanguageSwitch(): bool
+    {
+        if ($this->validateObjType()) {
+            $locales = count($this->translator()->availableLocales());
+            if ($locales > 1) {
+                foreach ($this->groups as $group) {
+                    if ($group instanceof LanguageSwitcherAwareInterface) {
+                        return $group->supportsLanguageSwitch();
+                    }
+
+                    if ($this->hasL10nGroupProperties($group)) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        return parent::supportsLanguageSwitch();
+    }
+
+    /**
      * Determine if the form has any multilingual properties.
      *
      * @return boolean
@@ -575,19 +601,9 @@ class ObjectFormWidget extends FormWidget implements
         if ($this->validateObjType()) {
             $locales = count($this->translator()->availableLocales());
             if ($locales > 1) {
-                $model = $this->proto();
-
-                foreach ($this->getFormProperties() as $formProp) {
-                    $modelProp = $formProp->property();
-                    if ($modelProp['l10n']) {
+                foreach ($this->groups as $group) {
+                    if ($this->hasL10nGroupProperties($group)) {
                         return true;
-                    } elseif ($modelProp instanceof ModelStructureProperty) {
-                        $metadata = $model->property($modelProp['ident'])->getStructureMetadata();
-                        foreach ($metadata->properties() as $prop) {
-                            if (isset($prop['l10n']) && $prop['l10n']) {
-                                return true;
-                            }
-                        }
                     }
                 }
             }
@@ -596,6 +612,51 @@ class ObjectFormWidget extends FormWidget implements
         }
 
         return parent::hasL10nFormProperties();
+    }
+
+    /**
+     * Determine if the group has any multilingual properties.
+     *
+     * @param  FormGroupInterface $group
+     * @return bool
+     */
+    protected function hasL10nGroupProperties(FormGroupInterface $group)
+    {
+        if ($group instanceof AdminFormGroupInterface) {
+            foreach ($group->groupProperties() as $prop) {
+                if ($this->isL10nModelProperty($this->obj(), $prop)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine if the model property is multilingual.
+     *
+     * @param  ModelInterface $model
+     * @param  string         $propertyIdent
+     * @return ?bool
+     */
+    protected function isL10nModelProperty(ModelInterface $model, string $propertyIdent): ?bool
+    {
+        $modelProperty = $model->property($propertyIdent);
+        if ($modelProperty['l10n']) {
+            return true;
+        }
+
+        if ($modelProperty instanceof ModelStructureProperty) {
+            $metadata = $modelProperty->getStructureMetadata();
+            foreach ($metadata->properties() as $prop) {
+                if (isset($prop['l10n']) && $prop['l10n']) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

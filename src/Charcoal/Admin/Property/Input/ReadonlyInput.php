@@ -5,19 +5,14 @@ namespace Charcoal\Admin\Property\Input;
 use JsonException;
 use RuntimeException;
 use UnexpectedValueException;
-
 // From Pimple
 use Pimple\Container;
-
 // From 'charcoal-factory'
 use Charcoal\Factory\FactoryInterface;
-
 // From 'charcoal-translator'
 use Charcoal\Translator\Translation;
-
 // From 'charcoal-property'
 use Charcoal\Property\HtmlProperty;
-
 // From 'charcoal-admin'
 use Charcoal\Admin\Property\AbstractPropertyInput;
 
@@ -29,12 +24,12 @@ use Charcoal\Admin\Property\AbstractPropertyInput;
  */
 class ReadonlyInput extends AbstractPropertyInput
 {
-    const RENDER_TYPE_CONTROL        = 'input';
-    const RENDER_TYPE_DISPLAY        = 'display';
+    public const RENDER_TYPE_CONTROL        = 'input';
+    public const RENDER_TYPE_DISPLAY        = 'display';
 
-    const DEFAULT_MAYBE_INPUT_IS_SERIALIZED = false;
-    const DEFAULT_RENDER_TYPE               = self::RENDER_TYPE_CONTROL;
-    const DEFAULT_SHOW_AS_CODE_BLOCK        = false;
+    public const DEFAULT_MAYBE_INPUT_IS_SERIALIZED = false;
+    public const DEFAULT_RENDER_TYPE               = self::RENDER_TYPE_CONTROL;
+    public const DEFAULT_SHOW_AS_CODE_BLOCK        = false;
 
     /**
      * Whether the input property has a value.
@@ -201,7 +196,7 @@ class ReadonlyInput extends AbstractPropertyInput
         if (!is_null($input) && $this->maybeInputIsSerialized()) {
             try {
                 if (!is_scalar($input)) {
-                    $output = json_encode($input, (JSON_PRETTY_PRINT|JSON_THROW_ON_ERROR));
+                    $output = json_encode($input, (JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR));
                     if (!is_null($output)) {
                         return $output;
                     }
@@ -224,7 +219,7 @@ class ReadonlyInput extends AbstractPropertyInput
     {
         if (!is_null($input) && $this->maybeInputIsSerialized()) {
             try {
-                $output = json_decode($input, false, 512,  JSON_THROW_ON_ERROR);
+                $output = json_decode($input, false, 512, JSON_THROW_ON_ERROR);
                 if (!is_scalar($output) && !is_null($output)) {
                     return $output;
                 }

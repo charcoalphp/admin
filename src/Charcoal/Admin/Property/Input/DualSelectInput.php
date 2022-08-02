@@ -4,7 +4,6 @@ namespace Charcoal\Admin\Property\Input;
 
 use InvalidArgumentException;
 use OutOfBoundsException;
-
 // From 'charcoal-admin'
 use Charcoal\Admin\Property\AbstractSelectableInput;
 
@@ -18,9 +17,9 @@ use Charcoal\Admin\Property\AbstractSelectableInput;
  */
 class DualSelectInput extends AbstractSelectableInput
 {
-    const ROWS_INPUT_LAYOUT    = 'rows';
-    const COLS_INPUT_LAYOUT    = 'cols';
-    const DEFAULT_INPUT_LAYOUT = self::COLS_INPUT_LAYOUT;
+    public const ROWS_INPUT_LAYOUT    = 'rows';
+    public const COLS_INPUT_LAYOUT    = 'cols';
+    public const DEFAULT_INPUT_LAYOUT = self::COLS_INPUT_LAYOUT;
 
     /**
      * How the dual-select controls should be displayed.

@@ -4,21 +4,16 @@ namespace Charcoal\Admin\Action\Filesystem;
 
 use Exception;
 use InvalidArgumentException;
-
 // From PSR-7
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-
 // From Pimple
 use Pimple\Container;
-
 // From Pimple
 use Slim\Http\Stream;
-
 // From 'league/flysystem'
 use League\Flysystem\FileNotFoundException;
-
 // From 'charcoal-admin'
 use Charcoal\Admin\AdminAction;
 
@@ -51,8 +46,8 @@ use Charcoal\Admin\AdminAction;
  */
 class LoadAction extends AdminAction
 {
-    const DISPOSITION_ATTACHMENT = 'attachment';
-    const DISPOSITION_INLINE     = 'inline';
+    public const DISPOSITION_ATTACHMENT = 'attachment';
+    public const DISPOSITION_INLINE     = 'inline';
 
     /**
      * The request parameters.
@@ -306,10 +301,12 @@ class LoadAction extends AdminAction
         }
 
         // path separators aren't allowed in either.
-        if (strpos($filename, '/') !== false ||
+        if (
+            strpos($filename, '/') !== false ||
             strpos($filename, '\\') !== false ||
             strpos($filenameFallback, '/') !== false ||
-            strpos($filenameFallback, '\\') !== false) {
+            strpos($filenameFallback, '\\') !== false
+        ) {
             throw new InvalidArgumentException(
                 'The filename and the fallback cannot contain the "/" and "\\" characters.'
             );

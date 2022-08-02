@@ -4,30 +4,22 @@ namespace Charcoal\Admin;
 
 use Exception;
 use InvalidArgumentException;
-
 // From PSR-7
 use Psr\Http\Message\RequestInterface;
-
 // From Pimple
 use Pimple\Container;
-
 // From 'charcoal-factory'
 use Charcoal\Factory\FactoryInterface;
-
 // From 'charcoal-user'
 use Charcoal\User\AuthAwareInterface;
 use Charcoal\User\AuthAwareTrait;
-
 // From 'charcoal-translator'
 use Charcoal\Translator\TranslatorAwareTrait;
-
 // From 'charcoal-ui'
 use Charcoal\Ui\PrioritizableInterface;
-
 // From 'charcoal-app'
 use Charcoal\App\DebugAwareTrait;
 use Charcoal\App\Template\AbstractTemplate;
-
 // From 'charcoal-admin'
 use Charcoal\Admin\Ui\DashboardContainerInterface;
 use Charcoal\Admin\Support\AdminTrait;
@@ -57,7 +49,7 @@ class AdminTemplate extends AbstractTemplate implements
     use SecurityTrait;
     use TranslatorAwareTrait;
 
-    const GOOGLE_RECAPTCHA_CLIENT_URL = 'https://www.google.com/recaptcha/api.js';
+    public const GOOGLE_RECAPTCHA_CLIENT_URL = 'https://www.google.com/recaptcha/api.js';
 
     /**
      * The name of the project.
@@ -189,7 +181,7 @@ class AdminTemplate extends AbstractTemplate implements
         $redirectTo = urlencode($request->getRequestTarget());
 
         header('HTTP/1.0 403 Forbidden');
-        header('Location: '.$this->adminUrl('login?redirect_to='.$redirectTo));
+        header('Location: ' . $this->adminUrl('login?redirect_to=' . $redirectTo));
         exit;
     }
 
@@ -786,30 +778,9 @@ class AdminTemplate extends AbstractTemplate implements
             $menuItems[] = $this->parseMainMenuItem($menuItem, $menuIdent, $mainMenuIdent);
         }
 
-        usort($menuItems, [ $this, 'sortItemsByPriority' ]);
+        usort($menuItems, [ 'Charcoal\Admin\Support\Sorter', 'sortByPriority' ]);
 
         return $menuItems;
-    }
-
-    /**
-     * Comparison function used by {@see uasort()}.
-     *
-     * @param  mixed $a Sortable entity A.
-     * @param  mixed $b Sortable entity B.
-     * @return integer Sorting value: -1 or 1.
-     */
-    protected function sortItemsByPriority(
-        $a,
-        $b
-    ) {
-        $priorityA = isset($a['priority']) ? $a['priority'] : 0;
-        $priorityB = isset($b['priority']) ? $b['priority'] : 0;
-
-        if ($priorityA === $priorityB) {
-            return 0;
-        }
-
-        return ($priorityA < $priorityB) ? (-1) : 1;
     }
 
     /**
@@ -1004,7 +975,7 @@ class AdminTemplate extends AbstractTemplate implements
      */
     private function parseMainMenuItem(array $menuItem, $menuIdent = null, $currentIdent = null)
     {
-        $svgUri = $this->baseUrl().'assets/admin/images/svgs.svg#icon-';
+        $svgUri = $this->baseUrl() . 'assets/admin/images/svgs.svg#icon-';
 
         if (isset($menuItem['ident'])) {
             $menuIdent = $menuItem['ident'];
@@ -1015,7 +986,7 @@ class AdminTemplate extends AbstractTemplate implements
         if (!empty($menuItem['url'])) {
             $url = $menuItem['url'];
             if ($url && strpos($url, ':') === false && !in_array($url[0], [ '/', '#', '?' ])) {
-                $url = $this->adminUrl().$url;
+                $url = $this->adminUrl() . $url;
             }
         } else {
             $url = '';
@@ -1026,10 +997,10 @@ class AdminTemplate extends AbstractTemplate implements
         if (isset($menuItem['icon'])) {
             $icon = $menuItem['icon'];
             if ($icon && strpos($icon, ':') === false && !in_array($icon[0], [ '/', '#', '?' ])) {
-                $icon = $svgUri.$icon;
+                $icon = $svgUri . $icon;
             }
         } else {
-            $icon = $svgUri.'contents';
+            $icon = $svgUri . 'contents';
         }
 
         if (is_string($icon) && strpos($icon, '.svg') > 0) {
@@ -1086,7 +1057,7 @@ class AdminTemplate extends AbstractTemplate implements
         if (!empty($menuItem['url'])) {
             $url = $menuItem['url'];
             if ($url && strpos($url, ':') === false && !in_array($url[0], [ '/', '#', '?' ])) {
-                $url = $this->adminUrl().$url;
+                $url = $this->adminUrl() . $url;
             }
         } else {
             $url = '#';
@@ -1236,6 +1207,6 @@ class AdminTemplate extends AbstractTemplate implements
      */
     final public function escapedAdminDataForJsAsJson()
     {
-        return '{{=<% %>=}}'.$this->adminDataForJsAsJson().'<%={{ }}=%>';
+        return '{{=<% %>=}}' . $this->adminDataForJsAsJson() . '<%={{ }}=%>';
     }
 }

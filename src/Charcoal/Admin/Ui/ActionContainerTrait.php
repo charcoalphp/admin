@@ -3,17 +3,13 @@
 namespace Charcoal\Admin\Ui;
 
 use RuntimeException;
-
 // From 'charcoal-translator'
 use Charcoal\Translator\Translation;
-
 // From 'charcoal-view'
 use Charcoal\View\ViewableInterface;
 use Charcoal\View\ViewInterface;
-
 // From 'charcoal-user'
 use Charcoal\User\AuthAwareInterface;
-
 // From 'charcoal-admin'
 use Charcoal\Admin\Ui\CollectionContainerInterface;
 use Charcoal\Admin\Ui\FormSidebarInterface;
@@ -67,7 +63,7 @@ trait ActionContainerTrait
             }
         }
 
-        usort($parsedActions, [ $this, 'sortActionsByPriority' ]);
+        usort($parsedActions, [ 'Charcoal\Admin\Support\Sorter', 'sortByPriority' ]);
 
         while (($first = reset($parsedActions)) && $first['isSeparator']) {
             array_shift($parsedActions);
@@ -440,7 +436,7 @@ trait ActionContainerTrait
             }
 
             if ($url && strpos($url, ':') === false && !in_array($url[0], [ '/', '#', '?' ])) {
-                $url = $this->adminUrl().$url;
+                $url = $this->adminUrl() . $url;
             }
 
             return $url;
@@ -448,7 +444,7 @@ trait ActionContainerTrait
             $url = $renderer->renderTemplate($url);
 
             if ($url && strpos($url, ':') === false && !in_array($url[0], [ '/', '#', '?' ])) {
-                $url = $this->adminUrl().$url;
+                $url = $this->adminUrl() . $url;
             }
         }
 
@@ -475,8 +471,8 @@ trait ActionContainerTrait
             $classes = [];
         }
         $classes[] = 'btn';
-        $classes[] = 'btn-'.$action['actionType'];
-        $classes[] = $this->jsActionPrefix().'-'.$action['ident'];
+        $classes[] = 'btn-' . $action['actionType'];
+        $classes[] = $this->jsActionPrefix() . '-' . $action['ident'];
 
         return $classes;
     }
@@ -527,23 +523,6 @@ trait ActionContainerTrait
         return defined('static::DEFAULT_ACTION_PRIORITY') ? static::DEFAULT_ACTION_PRIORITY : 10;
     }
 
-    /**
-     * To be called with {@see uasort()}.
-     *
-     * @param  array $a Sortable action A.
-     * @param  array $b Sortable action B.
-     * @return integer
-     */
-    protected function sortActionsByPriority(array $a, array $b)
-    {
-        $a = isset($a['priority']) ? $a['priority'] : 0;
-        $b = isset($b['priority']) ? $b['priority'] : 0;
-
-        if ($a === $b) {
-            return 0;
-        }
-        return ($a < $b) ? (-1) : 1;
-    }
 
     /**
      * To be called when merging actions.

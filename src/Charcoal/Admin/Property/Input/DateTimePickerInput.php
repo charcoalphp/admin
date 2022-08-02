@@ -3,7 +3,6 @@
 namespace Charcoal\Admin\Property\Input;
 
 use InvalidArgumentException;
-
 use Charcoal\Admin\Property\AbstractPropertyInput;
 
 /**
@@ -11,7 +10,7 @@ use Charcoal\Admin\Property\AbstractPropertyInput;
  */
 class DateTimePickerInput extends AbstractPropertyInput
 {
-    const DEFAULT_JS_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+    public const DEFAULT_JS_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
     /**
      * @var string $inputGroupClass

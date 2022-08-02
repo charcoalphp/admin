@@ -5,7 +5,6 @@ namespace Charcoal\Admin\Widget\Graph;
 // From 'charcoal-admin'
 use Charcoal\Admin\AdminWidget;
 use Charcoal\Admin\Widget\Graph\GraphWidgetInterface;
-
 use Charcoal\Admin\Ui\ActionContainerTrait;
 use Charcoal\Admin\Ui\CollectionContainerInterface;
 use Charcoal\Admin\Ui\CollectionContainerTrait;
@@ -23,7 +22,7 @@ abstract class AbstractGraphWidget extends AdminWidget implements
      *
      * @const integer
      */
-    const DEFAULT_ACTION_PRIORITY = 10;
+    public const DEFAULT_ACTION_PRIORITY = 10;
 
     /**
      * Store the list actions.
@@ -322,7 +321,7 @@ abstract class AbstractGraphWidget extends AdminWidget implements
             }
         }
 
-        usort($graphActions, [ $this, 'sortActionsByPriority' ]);
+        usort($graphActions, [ 'Charcoal\Admin\Support\Sorter', 'sortByPriority' ]);
 
         while (($first = reset($graphActions)) && $first['isSeparator']) {
             array_shift($graphActions);

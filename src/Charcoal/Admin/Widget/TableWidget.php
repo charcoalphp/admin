@@ -3,20 +3,15 @@
 namespace Charcoal\Admin\Widget;
 
 use RuntimeException;
-
 // From Pimple
 use Pimple\Container;
-
 // From 'charcoal-core'
 use Charcoal\Loader\CollectionLoader;
 use Charcoal\Model\ModelInterface;
-
 // From 'charcoal-factory'
 use Charcoal\Factory\FactoryInterface;
-
 // From 'charcoal-property'
 use Charcoal\Property\PropertyInterface;
-
 // From 'charcoal-admin'
 use Charcoal\Admin\AdminWidget;
 use Charcoal\Admin\Support\HttpAwareTrait;
@@ -44,7 +39,7 @@ class TableWidget extends AdminWidget implements CollectionContainerInterface
      *
      * @const integer
      */
-    const DEFAULT_ACTION_PRIORITY = 10;
+    public const DEFAULT_ACTION_PRIORITY = 10;
 
     /**
      * @var array $properties
@@ -882,7 +877,7 @@ class TableWidget extends AdminWidget implements CollectionContainerInterface
     public function objectEditUrl()
     {
         $model = $this->proto();
-        $url   = 'object/edit?main_menu={{ main_menu }}&obj_type='.$this->objType();
+        $url   = 'object/edit?main_menu={{ main_menu }}&obj_type=' . $this->objType();
 
         if ($this->isObjRenderable($model)) {
             $url = $model->render((string)$url);
@@ -1151,7 +1146,7 @@ class TableWidget extends AdminWidget implements CollectionContainerInterface
                 $method = $matches[2];
 
                 if ($class === 'parent') {
-                    $resolved = [ $model, $class.'::'.$method ];
+                    $resolved = [ $model, $class . '::' . $method ];
                 }
             }
 
@@ -1245,7 +1240,7 @@ class TableWidget extends AdminWidget implements CollectionContainerInterface
             }
         }
 
-        usort($listActions, [ $this, 'sortActionsByPriority' ]);
+        usort($listActions, [ 'Charcoal\Admin\Support\Sorter', 'sortByPriority' ]);
 
         while (($first = reset($listActions)) && $first['isSeparator']) {
             array_shift($listActions);
@@ -1282,7 +1277,7 @@ class TableWidget extends AdminWidget implements CollectionContainerInterface
         if ($this->defaultObjectActions === null) {
             $edit = [
                 'label'    => $this->translator()->translation('Modify'),
-                'url'      => $this->objectEditUrl().'&obj_id={{id}}',
+                'url'      => $this->objectEditUrl() . '&obj_id={{id}}',
                 'ident'    => 'edit',
                 'priority' => 1
             ];

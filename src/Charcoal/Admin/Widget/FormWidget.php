@@ -5,31 +5,26 @@ namespace Charcoal\Admin\Widget;
 use Exception;
 use InvalidArgumentException;
 use RuntimeException;
-
 // From Pimple
 use Pimple\Container;
-
 // From PSR-7
 use Psr\Http\Message\RequestInterface;
-
 // From 'charcoal-factory'
 use Charcoal\Factory\FactoryInterface;
-
 // From 'charcoal-translator'
 use Charcoal\Translator\Translation;
-
 /// From 'charcoal-ui'
 use Charcoal\Ui\Form\FormInterface;
 use Charcoal\Ui\Form\FormTrait;
 use Charcoal\Ui\Layout\LayoutAwareInterface;
 use Charcoal\Ui\Layout\LayoutAwareTrait;
 use Charcoal\Ui\PrioritizableInterface;
-
 // From 'charcoal-admin'
 use Charcoal\Admin\AdminWidget;
 use Charcoal\Admin\Property\HierarchicalObjectProperty;
 use Charcoal\Admin\Support\HttpAwareTrait;
 use Charcoal\Admin\Ui\FormSidebarInterface;
+use Charcoal\Admin\Ui\LanguageSwitcherAwareInterface;
 use Charcoal\Admin\Ui\ObjectContainerInterface;
 use Charcoal\Admin\Widget\FormPropertyWidget;
 
@@ -42,6 +37,7 @@ use Charcoal\Admin\Widget\FormPropertyWidget;
  */
 class FormWidget extends AdminWidget implements
     FormInterface,
+    LanguageSwitcherAwareInterface,
     LayoutAwareInterface
 {
     use FormTrait;
@@ -390,7 +386,7 @@ class FormWidget extends AdminWidget implements
      */
     public function hasSidebars()
     {
-        return (bool) $this->sidebars;
+        return (bool)$this->sidebars;
     }
 
     /**
@@ -610,6 +606,16 @@ class FormWidget extends AdminWidget implements
 
             yield $formProperty->propertyIdent() => $formProperty;
         }
+    }
+
+    /**
+     * Whether a language switcher could be displayed.
+     *
+     * @return bool
+     */
+    public function supportsLanguageSwitch(): bool
+    {
+        return $this->hasL10nFormProperties();
     }
 
     /**

@@ -6,23 +6,17 @@ use LogicException;
 use RuntimeException;
 use InvalidArgumentException;
 use UnexpectedValueException;
-
 // From Pimple
 use Pimple\Container;
-
 // From 'charcoal-factory'
 use Charcoal\Factory\FactoryInterface;
-
 // From 'charcoal-property'
 use Charcoal\Property\PropertyInterface;
-
 // From 'charcoal-view'
 use Charcoal\View\ViewableInterface;
-
 // From 'charcoal-ui'
 use Charcoal\Ui\FormGroup\FormGroupInterface;
 use Charcoal\Ui\FormInput\FormInputInterface;
-
 // From 'charcoal-admin'
 use Charcoal\Admin\AdminWidget;
 
@@ -34,13 +28,13 @@ use Charcoal\Admin\AdminWidget;
 class FormPropertyWidget extends AdminWidget implements
     FormInputInterface
 {
-    const HIDDEN_FORM_CONTROL     = 'charcoal/admin/property/input/hidden';
-    const READONLY_FORM_CONTROL   = 'charcoal/admin/property/input/readonly';
-    const DEFAULT_FORM_CONTROL    = 'charcoal/admin/property/input/text';
+    public const HIDDEN_FORM_CONTROL     = 'charcoal/admin/property/input/hidden';
+    public const READONLY_FORM_CONTROL   = 'charcoal/admin/property/input/readonly';
+    public const DEFAULT_FORM_CONTROL    = 'charcoal/admin/property/input/text';
 
-    const PROPERTY_CONTROL = 'input';
-    const PROPERTY_DISPLAY = 'display';
-    const DEFAULT_OUTPUT   = self::PROPERTY_CONTROL;
+    public const PROPERTY_CONTROL = 'input';
+    public const PROPERTY_DISPLAY = 'display';
+    public const DEFAULT_OUTPUT   = self::PROPERTY_CONTROL;
 
     /**
      * The widget's type.
@@ -274,7 +268,7 @@ class FormPropertyWidget extends AdminWidget implements
         }
 
         if (!$this->widgetId) {
-            $this->widgetId = 'widget_'.uniqid();
+            $this->widgetId = 'widget_' . uniqid();
         }
 
         return $this->widgetId;
@@ -933,7 +927,6 @@ class FormPropertyWidget extends AdminWidget implements
     /**
      * Determine if the form control's active language should be displayed.
      *
-     * @see    FormSidebarWidget::showLanguageSwitch()
      * @return boolean
      */
     public function showActiveLanguage()
@@ -1148,7 +1141,7 @@ class FormPropertyWidget extends AdminWidget implements
             $outputId = $prop->{$getter}();
             foreach ($locales as $langCode) {
                 // Set a unique property output ID for each locale.
-                $prop->{$setter}($outputId.'_'.$langCode);
+                $prop->{$setter}($outputId . '_' . $langCode);
                 $prop->setLang($langCode);
 
                 yield $prop;
@@ -1264,13 +1257,13 @@ class FormPropertyWidget extends AdminWidget implements
      */
     protected function defaultFormFieldCssClasses()
     {
-        $classes = [ 'form-field', 'form-field-'.$this->widgetId() ];
+        $classes = [ 'form-field', 'form-field-' . $this->widgetId() ];
 
         if ($this->prop()) {
-            $classes[] = 'form-property-'.$this->inputNameAsCssClass();
+            $classes[] = 'form-property-' . $this->inputNameAsCssClass();
 
             if ($this->prop()->type()) {
-                $classes[] = 'form-property-'.$this->prop()->type();
+                $classes[] = 'form-property-' . $this->prop()->type();
             }
 
             if ($this->prop()['multiple']) {

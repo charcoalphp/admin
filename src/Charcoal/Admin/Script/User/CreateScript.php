@@ -3,18 +3,14 @@
 namespace Charcoal\Admin\Script\User;
 
 use Exception;
-
 // From PSR-7
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-
 // From Pimple
 use Pimple\Container;
-
 // From 'charcoal-user'
 use Charcoal\User\AuthAwareInterface;
 use Charcoal\User\AuthAwareTrait;
-
 // From 'charcoal-admin'
 use Charcoal\Admin\AdminScript;
 use Charcoal\Admin\User;
@@ -27,7 +23,7 @@ class CreateScript extends AdminScript implements
 {
     use AuthAwareTrait;
 
-    const MIN_PASSWORD_LENGTH = 5;
+    public const MIN_PASSWORD_LENGTH = 5;
 
     /**
      * @param array|\ArrayAccess $data The dependencies (app and logger).
@@ -141,7 +137,7 @@ class CreateScript extends AdminScript implements
             $msg = $this->translator()->translate('Database table created for "{{ objType }}".', [
                 '{{ objType }}' => $user->objType()
             ]);
-            $climate->green()->out("\n".$msg);
+            $climate->green()->out("\n" . $msg);
         }
 
         $vals = [];
@@ -173,7 +169,7 @@ class CreateScript extends AdminScript implements
         $result = $user->save();
 
         if ($result) {
-            $climate->green()->out("\n".sprintf('Success! User "%s" created.', $user['email']));
+            $climate->green()->out("\n" . sprintf('Success! User "%s" created.', $user['email']));
         } else {
             $climate->red()->out("\nError. User could not be created.");
         }

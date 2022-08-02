@@ -4,14 +4,11 @@ namespace Charcoal\Admin\Property\Display;
 
 // from 'charcoal-admin'
 use Charcoal\Admin\Property\AbstractPropertyDisplay;
-
 // from 'charcoal-view'
 use Charcoal\View\ViewableInterface;
 use Charcoal\View\ViewableTrait;
-
 // from 'pimple'
 use Pimple\Container;
-
 use UnexpectedValueException;
 
 /**
@@ -23,14 +20,14 @@ class StatusDisplay extends AbstractPropertyDisplay implements ViewableInterface
 {
     use ViewableTrait;
 
-    const STATE_PRIMARY = 'primary';
-    const STATE_SUCCESS = 'success';
-    const STATE_INFO = 'info';
-    const STATE_WARNING = 'warning';
-    const STATE_DANGER = 'danger';
-    const STATE_DEFAULT = 'default';
+    public const STATE_PRIMARY = 'primary';
+    public const STATE_SUCCESS = 'success';
+    public const STATE_INFO = 'info';
+    public const STATE_WARNING = 'warning';
+    public const STATE_DANGER = 'danger';
+    public const STATE_DEFAULT = 'default';
 
-    const SUPPORTED_STATES = [
+    public const SUPPORTED_STATES = [
         self::STATE_PRIMARY,
         self::STATE_SUCCESS,
         self::STATE_INFO,
@@ -39,7 +36,7 @@ class StatusDisplay extends AbstractPropertyDisplay implements ViewableInterface
         self::STATE_DEFAULT,
     ];
 
-    const SUPPORTED_OPERATOR = [
+    public const SUPPORTED_OPERATOR = [
         '===',
         '!==',
         '==',

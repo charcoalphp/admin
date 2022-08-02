@@ -5,25 +5,18 @@ namespace Charcoal\Admin\Template;
 use ArrayIterator;
 use RuntimeException;
 use InvalidArgumentException;
-
 // From PSR-7
 use Psr\Http\Message\RequestInterface;
-
 // From Pimple
 use Pimple\Container;
-
 // From Mustache
 use Mustache_LambdaHelper as LambdaHelper;
-
 // From 'charcoal-factory'
 use Charcoal\Factory\FactoryInterface;
-
 // From 'charcoal-translator'
 use Charcoal\Translator\Translation;
-
 // From 'charcoal-property'
 use Charcoal\Property\FileProperty;
-
 // From 'charcoal-admin'
 use Charcoal\Admin\AdminTemplate;
 
@@ -32,8 +25,8 @@ use Charcoal\Admin\AdminTemplate;
  */
 class ElfinderTemplate extends AdminTemplate
 {
-    const ADMIN_ASSETS_REL_PATH    = 'assets/admin/';
-    const ELFINDER_ASSETS_REL_PATH = 'assets/admin/elfinder/';
+    public const ADMIN_ASSETS_REL_PATH    = 'assets/admin/';
+    public const ELFINDER_ASSETS_REL_PATH = 'assets/admin/elfinder/';
 
     /**
      * Store the elFinder configuration from the admin configuration.
@@ -330,7 +323,7 @@ class ElfinderTemplate extends AdminTemplate
      */
     final public function escapedElfinderLocalizationsAsJson()
     {
-        return '{{=<% %>=}}'.$this->elfinderLocalizationsAsJson().'<%={{ }}=%>';
+        return '{{=<% %>=}}' . $this->elfinderLocalizationsAsJson() . '<%={{ }}=%>';
     }
 
     /**
@@ -415,7 +408,7 @@ class ElfinderTemplate extends AdminTemplate
     protected function getElfinderConnectorUrlTemplate()
     {
         $uri = 'obj_type={{ objType }}&obj_id={{ objId }}&property={{ propertyIdent }}';
-        $uri = '{{# withAdminUrl }}elfinder-connector?'.$uri.'{{/ withAdminUrl }}';
+        $uri = '{{# withAdminUrl }}elfinder-connector?' . $uri . '{{/ withAdminUrl }}';
 
         return $uri;
     }
@@ -537,7 +530,7 @@ class ElfinderTemplate extends AdminTemplate
      */
     final public function escapedElfinderClientConfigAsJson()
     {
-        return '{{=<% %>=}}'.$this->elfinderClientConfigAsJson().'<%={{ }}=%>';
+        return '{{=<% %>=}}' . $this->elfinderClientConfigAsJson() . '<%={{ }}=%>';
     }
 
     /**

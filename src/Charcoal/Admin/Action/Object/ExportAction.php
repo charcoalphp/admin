@@ -5,10 +5,8 @@ namespace Charcoal\Admin\Action\Object;
 // From PSR-7
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-
 // From Pimple
 use Pimple\Container;
-
 // From 'charcoal-admin'
 use Charcoal\Admin\AdminAction;
 use Charcoal\Admin\Service\Exporter;
@@ -52,6 +50,8 @@ class ExportAction extends AdminAction
      */
     public function run(RequestInterface $request, ResponseInterface $response)
     {
+        set_time_limit(0);
+
         $failMessage = $this->translator()->translation('Failed to export object(s)');
         $errorThrown = strtr($this->translator()->translation('{{ errorMessage }}: {{ errorThrown }}'), [
             '{{ errorMessage }}' => $failMessage

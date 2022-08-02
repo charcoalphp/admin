@@ -3,10 +3,8 @@
 namespace Charcoal\Admin;
 
 use InvalidArgumentException;
-
 // From 'charcoal-core'
 use Charcoal\Config\AbstractConfig;
-
 // From 'charcoal-app'
 use Charcoal\App\Handler\HandlerConfig;
 use Charcoal\App\Route\RouteConfig;
@@ -16,7 +14,7 @@ use Charcoal\App\Route\RouteConfig;
  */
 class Config extends AbstractConfig
 {
-    const DEFAULT_BASE_PATH = 'admin';
+    public const DEFAULT_BASE_PATH = 'admin';
 
     /**
      * The base path for the admin module's route group.
@@ -41,16 +39,23 @@ class Config extends AbstractConfig
     public $acl = [];
 
     /**
+     * The application's view/rendering configset.
+     *
+     * @var array
+     */
+    protected $view;
+
+    /**
      * The default data is defined in a JSON file.
      *
      * @return array
      */
     public function defaults()
     {
-        $baseDir = rtrim(realpath(__DIR__.'/../../../'), '/');
-        $confDir = $baseDir.'/config';
+        $baseDir = rtrim(realpath(__DIR__ . '/../../../'), '/');
+        $confDir = $baseDir . '/config';
 
-        return $this->loadFile($confDir.'/admin.config.default.json');
+        return $this->loadFile($confDir . '/admin.config.default.json');
     }
 
     /**
@@ -144,5 +149,28 @@ class Config extends AbstractConfig
     public function handlers()
     {
         return $this->handlers;
+    }
+
+    /**
+     * Configure the application's global view service.
+     *
+     * @param  array $view The global configset for the application's view service.
+     * @throws InvalidArgumentException If the argument is not a configset.
+     * @return self
+     */
+    public function setView(array $view)
+    {
+        $this->view = $view;
+        return $this;
+    }
+
+    /**
+     * Retrieve the configset for application's global view service.
+     *
+     * @return array
+     */
+    public function view()
+    {
+        return $this->view;
     }
 }
