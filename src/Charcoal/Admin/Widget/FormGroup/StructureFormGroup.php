@@ -16,6 +16,7 @@ use Charcoal\Ui\FormGroup\FormGroupInterface;
 use Charcoal\Ui\FormInput\FormInputInterface;
 // From 'charcoal-admin'
 use Charcoal\Admin\Widget\FormGroupWidget;
+use Charcoal\Admin\Ui\LanguageSwitcherAwareInterface;
 use Charcoal\Admin\Ui\ObjectContainerInterface;
 use Charcoal\Admin\Ui\StructureContainerInterface;
 use Charcoal\Admin\Ui\StructureContainerTrait;
@@ -73,6 +74,7 @@ use Charcoal\Admin\Ui\StructureContainerTrait;
  */
 class StructureFormGroup extends FormGroupWidget implements
     FormInputInterface,
+    LanguageSwitcherAwareInterface,
     StructureContainerInterface
 {
     use StructureContainerTrait;
@@ -466,17 +468,18 @@ class StructureFormGroup extends FormGroupWidget implements
         if ($this->parsedFormProperties === null) {
             $this->finalizeStructure();
 
-            $groupProperties     = array_map([ $this, 'camelize' ], $this->groupProperties());
+            $groupProperties     = $this->groupProperties();
             $availableProperties = $this->structProperties();
 
             $structProperties = [];
             if (!empty($groupProperties)) {
                 foreach ($groupProperties as $propertyIdent => $propertyMetadata) {
-                    $propertyIdent = $this->camelize($propertyIdent);
                     if (is_string($propertyMetadata)) {
                         $propertyIdent    = $propertyMetadata;
                         $propertyMetadata = null;
                     }
+
+                    $propertyIdent = $this->camelize($propertyIdent);
 
                     if (!isset($availableProperties[$propertyIdent])) {
                         continue;
@@ -602,5 +605,34 @@ class StructureFormGroup extends FormGroupWidget implements
                 $formProperty->clearFormGroup();
             }
         }
+    }
+
+    public function supportsLanguageSwitch(): bool
+    {
+        $groupProperties     = $this->groupProperties();
+        $availableProperties = $this->structProperties();
+
+        foreach ($groupProperties as $propertyIdent => $propertyMetadata) {
+            if (is_string($propertyMetadata)) {
+                $propertyIdent    = $propertyMetadata;
+                $propertyMetadata = null;
+            }
+
+            $propertyIdent = $this->camelize($propertyIdent);
+
+            if (isset($availableProperties[$propertyIdent])) {
+                if (is_array($propertyMetadata)) {
+                    $propertyMetadata = array_merge($propertyMetadata, $availableProperties[$propertyIdent]);
+                } else {
+                    $propertyMetadata = $availableProperties[$propertyIdent];
+                }
+            }
+
+            if (isset($propertyMetadata['l10n']) && $propertyMetadata['l10n']) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

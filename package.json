@@ -1,12 +1,12 @@
 {
     "private": true,
-    "name": "@locomotivemtl/charcoal-admin",
+    "name": "@charcoal/admin",
     "title": "Charcoal Admin",
     "version": "1.0.0",
     "author": "Locomotive <info@locomotive.ca>",
     "engines": {
         "node": "^14.17",
-        "npm": "^7 || ^8"
+        "npm": "^8"
     },
     "dependencies": {
         "@claviska/jquery-minicolors": "^2.3.6",
@@ -28,8 +28,8 @@
         "selectize": "~0.12.6",
         "tempusdominus-bootstrap-4": "^5.39.2",
         "timeago": "^1.6.5",
-        "tinymce": "^5.10.5",
-        "tinymce-i18n": "^22.5.2"
+        "tinymce": "^5.10.9",
+        "tinymce-i18n": "^23.12.4"
     },
     "devDependencies": {
         "@lodder/grunt-postcss": "^3.1.1",
